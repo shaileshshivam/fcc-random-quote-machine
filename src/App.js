@@ -1,15 +1,14 @@
 import styled from "styled-components";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
-const QUOTES_API_ENDPOINT = "https://api.quotable.io/random?minLength=70&maxLength=220"
+import { useRandomQuote } from "./useRandomQuote";
 
-async function getRandomQuote() {
-  const response = await fetch(QUOTES_API_ENDPOINT)
-  return response.json();
-}
+import Loader from "./Loader";
+import Error from "./Error";
 
 
-const backgrounds = ["#9c476c",
+const backgrounds = [
+  "#9c476c",
   "#56ba50",
   "#b853bd",
   "#9cb835",
@@ -28,7 +27,8 @@ const backgrounds = ["#9c476c",
   "#3e7b49",
   "#a06332",
   "#c8aa66",
-  "#7d742d"]
+  "#7d742d"
+]
 
 
 const Container = styled.div`
@@ -41,15 +41,15 @@ const Container = styled.div`
   font-family:Arial;
   background: ${(props) => `${props.background}`};
   color: #fff;
-
 `
 
 const QuoteBox = styled.section`
+  min-width:36rem;
   padding:1rem;
   padding-bottom:2rem;
   margin:0;
   width:50vw;
-  min-height:20rem;
+  min-height:50vh;
   border:1px solid black;
   position:relative;
   border-radius:1rem;
@@ -61,22 +61,26 @@ const Text = styled.p`
   width:100%;
   padding:2rem;
   padding-bottom:0;
-  font-size:1.5rem;
+  font-size:1.75rem;
   height:min-content;
   font-family: 'Didact Gothic', sans-serif;
-  word-spacing:0.5rem;
+
+  &::first-letter {
+    font-size:4rem;
+  }
 `
 
 const Author = styled.span`
   width:100%;
   display:block;
   padding-right:3rem;
-  padding-top:0.75rem;
+  padding-top:1.25rem;
   padding-bottom:2rem;
   text-transform:uppercase;
   text-align:right;
   letter-spacing:2px;
   font-family: 'Didact Gothic', sans-serif;
+  font-size:1.6rem;
  `
 
 const Button = styled.button`
@@ -88,7 +92,7 @@ const Button = styled.button`
   border:none;
   box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
   background:none;
-  font-size:1rem;
+  font-size:1.25rem;
   font-family:inherit;
   color:inherit;
   cursor:pointer;
@@ -100,7 +104,7 @@ const Link = styled.a`
   right:2rem;
   text-decoration:none;
   border-radius:10000rem;
-  font-size:1rem;
+  font-size:1.25rem;
   padding:0.5rem 1rem;
   border:none;
   color:inherit;
@@ -108,33 +112,19 @@ const Link = styled.a`
   font-family:inherit;
 `
 
-const Loader = styled.div`
-  background-color:dodgerblue;
-  border-radius:50%;
-  height:2rem;
-  width:2rem;
-`
-
 const Footer = styled.footer`
   padding:0 2rem;
   margin-top:auto;
 `
 
-const Error = styled.span`
-`
-
 function App() {
 
-  const { isLoading, isError, data } = useQuery(["quote"], getRandomQuote);
+  const { isLoading, isError, data } = useRandomQuote();
   const queryClient = useQueryClient();
 
   function getNewRandomQuote() {
     queryClient.invalidateQueries();
   }
-
-  console.log({
-    data
-  })
 
   if (isLoading) {
     return <Loader />
@@ -144,17 +134,17 @@ function App() {
     return <Error />
   }
 
-
-  const { id, content, author } = data
-
+  const { content, author } = data
+  const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)]
+  const tweetLink = `https://www.twitter.com/intent/tweet?text=${content}`
 
   return (
-    <Container background={backgrounds[Math.floor(Math.random() * backgrounds.length)]}>
+    <Container background={randomBackground}>
       <QuoteBox id="quote-box">
         <Text id="text">{content}</Text>
         <Author id="author">~ {author}</Author>
         <Footer>
-          <Link href={`https://www.twitter.com/intent/tweet?text=${content}`} id="tweet-quote">
+          <Link href={tweetLink} id="tweet-quote">
             tweet quote
           </Link>
           <Button onClick={getNewRandomQuote} id="new-quote">new quote</Button>
@@ -162,6 +152,7 @@ function App() {
       </QuoteBox>
     </Container>
   );
+
 }
 
 export default App;
