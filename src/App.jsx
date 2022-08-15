@@ -41,6 +41,11 @@ const Container = styled.div`
   font-family:Arial;
   background: ${(props) => `${props.background}`};
   color: #fff;
+
+  @media screen and (max-width: 60rem) {
+    padding:1rem;
+    min-width:22rem;
+  }
 `
 
 const QuoteBox = styled.section`
@@ -49,12 +54,18 @@ const QuoteBox = styled.section`
   padding-bottom:2rem;
   margin:0;
   width:50vw;
-  min-height:50vh;
+  min-height:26rem;
   border:1px solid black;
   position:relative;
   border-radius:1rem;
   background-color:#00000077;
   box-shadow: rgba(220, 255, 255, 0.4) 0px 0px 0px 2px, rgba(220, 255, 255, 0.65) 0px 4px 6px -1px, rgba(0, 0, 0, 0.08) 0px 1px 0px inset;
+
+  @media screen and (max-width: 40rem) {
+    width: 100%;
+    min-width:unset;
+    min-width:20rem;
+  }
 `
 
 const Text = styled.p`
@@ -64,9 +75,14 @@ const Text = styled.p`
   font-size:1.75rem;
   height:min-content;
   font-family: 'Didact Gothic', sans-serif;
+  line-height:2.5rem;
 
   &::first-letter {
     font-size:4rem;
+  }
+
+  @media screen and (max-width: 40rem) {
+    font-size: 1.5rem;
   }
 `
 
@@ -80,7 +96,13 @@ const Author = styled.span`
   text-align:right;
   letter-spacing:2px;
   font-family: 'Didact Gothic', sans-serif;
-  font-size:1.6rem;
+  font-size:1.4rem;
+
+  @media screen and (max-width: 40rem) {
+    font-size: 0.95rem;
+    text-align:center;
+    padding:2rem 0;
+  }
  `
 
 const Button = styled.button`
@@ -96,6 +118,12 @@ const Button = styled.button`
   font-family:inherit;
   color:inherit;
   cursor:pointer;
+
+  @media screen and (max-width: 40rem) {
+    left:1.5rem;
+    bottom:1.5rem;
+    font-size:0.9rem;
+  }
 `
 
 const Link = styled.a`
@@ -110,6 +138,13 @@ const Link = styled.a`
   color:inherit;
   box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
   font-family:inherit;
+
+  @media screen and (max-width: 40rem) {
+    right:1.5rem;
+    bottom:1.5rem;
+    font-size:0.9rem;
+  }
+
 `
 
 const Footer = styled.footer`
